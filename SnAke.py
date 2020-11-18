@@ -38,7 +38,7 @@ clock = pygame.time.Clock()
 title = pygame.display.set_caption("snake")
 font = pygame.font.SysFont(None, 30)
 
-
+song = pygame.mixer.music.load("Pokemon_Oro.wav")
 
 def player(snakeList):
     for XnY in snakeList:
@@ -80,6 +80,10 @@ def home():
         
 
 def gameLoop():
+
+    pygame.mixer.music.stop()
+    pygame.mixer.music.play()
+
     gameExit = False
     gameOver = False
     direction = None
