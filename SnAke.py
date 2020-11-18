@@ -16,7 +16,7 @@ write:
 #width = larghezza
 
 
-#FPS = 15  
+FPS = 20
 display_width = 400
 display_height = 400
 white = (255, 255, 255)
@@ -36,7 +36,9 @@ enemy_size = 10
 screen = pygame.display.set_mode((display_width, display_height))
 clock = pygame.time.Clock()
 title = pygame.display.set_caption("snake")
-font = pygame.font.SysFont(None, 20)
+font = pygame.font.SysFont(None, 30)
+
+
 
 def player(snakeList):
     for XnY in snakeList:
@@ -46,13 +48,36 @@ def textObjects(text, color):
     textSurface = font.render(text, True, color)
     return textSurface, textSurface.get_rect()
 
-def messageToScreen(msg, color):
+def messageToScreen(msg, color, margine_y = 0):
     textSurface, textRectangle = textObjects(msg, color)
-    textRectangle.center = (display_width/2), (display_height/2)
+    textRectangle.center = (display_width/2), (display_height/2) + margine_y
     screen.blit(textSurface, textRectangle)
 
     '''text = font.render(msg, True, color)
     screen.blit(text, (display_width/2-235, display_height/2))'''
+
+def home():
+    intro = True
+
+    while intro == True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                quit()
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_s:
+                    gameLoop()
+        
+        screen.fill(base_color)
+        messageToScreen("Welcome in Snake", character_color, -100)
+        messageToScreen("Eat the blue squares: not Yourself!", character_color, -50)
+        messageToScreen("Comands = WASD", character_color, 0)
+        messageToScreen("press S for ssstart", character_color, 50)
+        pygame.display.update()
+        clock.tick(FPS)
+
+
+        
 
 def gameLoop():
     gameExit = False
@@ -76,12 +101,13 @@ def gameLoop():
     while not gameExit:
         while gameOver == True:
             screen.fill(base_color)
-            messageToScreen("GAME OVER press R to restart the game or press Q for quit", character_color)
+            messageToScreen("GAME OVER press R to restart the game ", character_color, -50)
+            messageToScreen("or press Q for quit", character_color, 50)
             pygame.display.update()
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
-                        gameExit = True
-                        gameOver = False
+                    gameExit = True
+                    gameOver = False
                 if event.type == pygame.KEYDOWN:
                     if event.key ==  pygame.K_q:
                         gameExit = True
@@ -134,6 +160,7 @@ def gameLoop():
                 if event.key == pygame.K_f:
                         snakeLenght += 1
                         FPS += 3
+                
                 '''elif event.key == pygame.K_l:
                     randEnemyx = round(random.randrange(0, display_width - enemy_size ) / block_size) * block_size
                     randEnemyy = round(random.randrange(0, display_height - enemy_size) / block_size) * block_size
@@ -144,12 +171,15 @@ def gameLoop():
                     event.key == pygame.K_UP or event.key == pygame.K_DOWN:
                     main_x_change = 0
                     main_y_change = 0'''
-        if main_x > display_width+block_size:
-            main_x = 0
+        if main_x > display_width:
+            main_x = -block_size
         elif main_x < 0:
             main_x = display_width
-        elif main_y >= display_height:
-            main_y = 0
+            main_x_change = -block_size
+            main_y_change = 0
+            
+        elif main_y > display_height:
+            main_y = -block_size
         elif main_y < 0:
             main_y = display_height
 
@@ -211,4 +241,5 @@ def gameLoop():
     pygame.quit()
     quit()
 
+home()
 gameLoop()
