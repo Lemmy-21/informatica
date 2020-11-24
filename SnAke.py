@@ -17,8 +17,8 @@ write:
 
 
 FPS = 20
-display_width = 400
-display_height = 400
+display_width = 1000
+display_height = 1000
 white = (255, 255, 255)
 black = (0, 0, 0)
 red = (255, 0, 0)
@@ -29,6 +29,7 @@ character_color = (219, 32, 65)
 enemy_color = (48, 100, 230)
 gameExit = False
 direction = None
+
 
 block_size = 10
 enemy_size = 10
@@ -87,6 +88,9 @@ def gameLoop():
     gameExit = False
     gameOver = False
     direction = None
+
+    direction_portal_w = False
+    direction_portal_h = False
 
     main_x = display_width / 2
     main_y = display_height / 2
@@ -175,18 +179,60 @@ def gameLoop():
                     event.key == pygame.K_UP or event.key == pygame.K_DOWN:
                     main_x_change = 0
                     main_y_change = 0'''
-        if main_x > display_width:
+
+        if main_x == display_width:
+            if direction == 2:
+                prec_main_y_change = main_y_change
+                direction_portal_w = True
+        
             main_x = -block_size
+            main_x_change = block_size
+            main_y_change = 0
+            direction = 1
+
         elif main_x < 0:
+            if direction == 2:
+                prec_main_y_change = main_y_change
+                direction_portal_w = True
+                
             main_x = display_width
             main_x_change = -block_size
             main_y_change = 0
+            direction = 1
             
-        elif main_y > display_height:
+        elif main_y == display_height:
+            if direction == 1:
+                prec_main_x_change = main_x_change
+                direction_portal_h = True
+                
             main_y = -block_size
-        elif main_y < 0:
-            main_y = display_height
+            main_y_change = block_size
+            main_x_change = 0
+            direction = 2
 
+        elif main_y < 0:
+            if direction == 1:
+                prec_main_x_change = main_x_change
+                direction_portal_h = True
+
+            main_y = display_height
+            main_y_change = -block_size
+            main_x_change = 0
+            direction = 2
+
+        if direction_portal_w == True: 
+            if main_x == 0 or main_x == display_width - block_size:
+                main_y_change = prec_main_y_change
+                main_x_change = 0
+                direction = 2
+                direction_portal_w = False
+            
+        if direction_portal_h:
+            if main_y == 0 or main_y == display_height - block_size:
+                main_x_change = prec_main_x_change
+                main_y_change = 0
+                direction = 1
+                direction_portal_h = False
         main_x += main_x_change
         main_y += main_y_change
         screen.fill(base_color)
