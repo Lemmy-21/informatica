@@ -8,7 +8,7 @@ Creatore: Leonardo Cagossi
  Un semplice Snake di difficolta' progressiva per ogni frutto consumato 
  
  ## Possibili aggiornanemti 
- 1. Schermata home
- 2. scelta delle difficolta' 
- 3. :space_invader: aggiunta di musiche e suoni retro' :space_invader:
- 4. migliorare l'effeto pac-man 
+ 1. - [ ] Schermata home
+ 2. - [ ] scelta delle difficolta' 
+ 3. - [x] :space_invader: aggiunta di musiche e suoni retro' :space_invader:
+ 4. - [x] migliorare l'effeto pac-man 
